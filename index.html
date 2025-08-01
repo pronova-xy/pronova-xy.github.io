@@ -1,11 +1,9 @@
-
-// portfolio.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PRONOVA – Portfolio</title>
+  <title>PRONOVA – Home</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -14,28 +12,40 @@
     <nav>
       <a href="index.html">Home</a>
       <a href="portfolio.html">Portfolio</a>
+      <a href="services.html">Services</a>
       <a href="contact.html">Contact</a>
     </nav>
   </header>
+
   <main class="container">
-    <h2>Portfolio</h2>
-    <div class="services-grid">
-      <div class="service-card">
-        <img src="assets/screenshots/bot1.png" alt="MODX Bot Screenshot" class="card-img" />
-        <h3><a href="https://github.com/yourname/modx-bot" target="_blank">MODX Bot</a></h3>
-        <p>Auto-mod, economy, tickets</p>
+    <section class="hero">
+      <h2>Crafting Clean, Cold-Blooded Builds</h2>
+      <p>Full-stack dev, designer, and digital ninja. I build shit that slaps and looks good doing it.</p>
+      <a href="portfolio.html" class="btn">See My Work</a>
+    </section>
+
+    <section class="highlights">
+      <h2>What I Do</h2>
+      <div class="services-grid">
+        <div class="service-card">
+          <h3>Web Design</h3>
+          <p>From cold static landers to dynamic dashboards – fully responsive and sharp.</p>
+        </div>
+        <div class="service-card">
+          <h3>Bot Development</h3>
+          <p>Discord bots built with brains – economy, moderation, AI, you name it.</p>
+        </div>
+        <div class="service-card">
+          <h3>Branding</h3>
+          <p>Logos, color palettes, and vibes. Startups or side hustles, I got you.</p>
+        </div>
+        <div class="service-card">
+          <h3>A lot of different products</h3>
+          <p>Boosts, members amd much more</p>
+        </div>
+        
       </div>
-      <div class="service-card">
-        <img src="assets/screenshots/cryptoverse.png" alt="CryptoVerse Site Screenshot" class="card-img" />
-        <h3><a href="https://cryptoverse.app" target="_blank">CryptoVerse Site</a></h3>
-        <p>Landing + dashboard</p>
-      </div>
-      <div class="service-card">
-        <img src="assets/logos/frostbyte-logo.png" alt="FrostByte Logo" class="card-img" />
-        <h3><a href="https://dribbble.com/shots/your-shot-id" target="_blank">FrostByte Logo</a></h3>
-        <p>Gaming brand logo pack</p>
-      </div>
-    </div>
+    </section>
   </main>
 </body>
 </html>
