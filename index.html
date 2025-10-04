@@ -1,40 +1,148 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PRONOVA – Home</title>
-  <link rel="stylesheet" href="css/style.css" />
+<meta charset="UTF-8">
+<title>Ostatnie Światło - Karta Postaci</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #1a1a1a; color: #f0f0f0; padding: 20px; }
+  h1, h2 { color: #ff6600; }
+  label { display: block; margin-top: 10px; }
+  input, select, textarea { width: 100%; padding: 5px; margin-top: 3px; background: #333; color: #f0f0f0; border: 1px solid #555; }
+  textarea { resize: vertical; }
+  .section { border: 1px solid #555; padding: 10px; margin-bottom: 20px; }
+  button { padding: 10px 20px; background: #ff6600; color: #1a1a1a; border: none; cursor: pointer; margin-top: 10px; }
+</style>
 </head>
 <body>
-  <header>
-    <h1>PRONOVA</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="portfolio.html">Portfolio</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-  </header>
+<h1>Karta Postaci: Ostatnie Światło</h1>
 
-  <main class="container">
-    <section class="hero">
-      <h2>Crafting Clean, Cold-Blooded Builds</h2>
-      <p>Full-stack dev, designer, and digital ninja. I build shit that slaps and looks good doing it.</p>
-      <a href="portfolio.html" class="btn">See My Work</a>
-    </section>
+<div class="section">
+  <label>Imię Postaci:
+    <input type="text" id="name">
+  </label>
+  <label>Klasa:
+    <select id="class" onchange="setClassDefaults()">
+      <option value="zwiadowca">Zwiadowca Ruin</option>
+      <option value="medyczka">Medyczka “Igła”</option>
+      <option value="zolnierz">Były Żołnierz</option>
+      <option value="inzynier">Inżynier</option>
+      <option value="mutant">Popiołowy “Dym”</option>
+    </select>
+  </label>
+  <label>HP:
+    <input type="number" id="hp">
+  </label>
+  <label>AC:
+    <input type="number" id="ac">
+  </label>
+</div>
 
-    <section class="highlights">
-      <h2>What I Do</h2>
-      <div class="services-grid">
-        <div class="service-card">
-          <h3>Web Design</h3>
-          <p>From cold static landers to dynamic dashboards – fully responsive and sharp.</p>
-        </div>
-        <div class="service-card">
-          <h3>Bot Development</h3>
-          <p>Discord bots built with brains – economy, moderation, AI, you name it.</p>
-        </div>
-        <div class="service-card">
+<div class="section">
+  <label>Umiejętności Aktywne:</label>
+  <textarea id="abilities" rows="4"></textarea>
+
+  <label>Umiejętności Pasywne / Bonusy:</label>
+  <textarea id="passive" rows="3"></textarea>
+
+  <label>Słabości / Debuffy:</label>
+  <textarea id="debuff" rows="3"></textarea>
+</div>
+
+<div class="section">
+  <label>Mutacje / Efekty Promieniowania:</label>
+  <textarea id="mutation" rows="3"></textarea>
+</div>
+
+<button onclick="saveCharacter()">Zapisz / Generuj URL</button>
+<p id="urlOutput"></p>
+
+<script>
+// Default class data
+const classData = {
+  zwiadowca: {
+    hp: 16, ac: 12,
+    abilities: "Cichy Krok, Pułapka i Ewakuacja, Ostre Oko",
+    passive: "+2 Stealth, +1 Initiative",
+    debuff: "Fail stealth = alert nearby enemies"
+  },
+  medyczka: {
+    hp: 14, ac: 11,
+    abilities: "Prowizoryczna Operacja, Adrenalina, Uspokajający Ton",
+    passive: "Może rzucić reroll na Con lub Dex raz na sesję",
+    debuff: "Out of supplies = cannot heal"
+  },
+  zolnierz: {
+    hp: 20, ac: 15,
+    abilities: "Adrenalina Bojowa, Ostatni Nabój, Rozbicie Linii",
+    passive: "High melee damage",
+    debuff: "Low ammo = -2 damage"
+  },
+  inzynier: {
+    hp: 17, ac: 12,
+    abilities: "Pole Naprawy, Pułapka z Żelaza, Generator Ratunkowy",
+    passive: "Bonus to fixing traps",
+    debuff: "Fail tinkering = trap backfires"
+  },
+  mutant: {
+    hp: 15, ac: 12,
+    abilities: "Puls Popiołu, Cień w Tunelu, Instynkt Przetrwania",
+    passive: "+2 stealth in tunnels",
+    debuff: "Each Puls Popiołu use increases mutation side-effect"
+  }
+};
+
+// Set default values when class is selected
+function setClassDefaults() {
+  const cls = document.getElementById('class').value;
+  const data = classData[cls];
+  if(!data) return;
+  document.getElementById('hp').value = data.hp;
+  document.getElementById('ac').value = data.ac;
+  document.getElementById('abilities').value = data.abilities;
+  document.getElementById('passive').value = data.passive;
+  document.getElementById('debuff').value = data.debuff;
+}
+
+// Save character to URL
+function saveCharacter() {
+  const data = {
+    name: document.getElementById('name').value,
+    class: document.getElementById('class').value,
+    hp: document.getElementById('hp').value,
+    ac: document.getElementById('ac').value,
+    abilities: document.getElementById('abilities').value,
+    passive: document.getElementById('passive').value,
+    debuff: document.getElementById('debuff').value,
+    mutation: document.getElementById('mutation').value
+  };
+  const encoded = encodeURIComponent(JSON.stringify(data));
+  const url = `${window.location.origin}${window.location.pathname}?c=${encoded}`;
+  document.getElementById('urlOutput').innerHTML = `<a href="${url}" target="_blank">${url}</a>`;
+}
+
+// Load character from URL if present
+window.onload = function() {
+  const params = new URLSearchParams(window.location.search);
+  if(params.has('c')) {
+    try {
+      const data = JSON.parse(decodeURIComponent(params.get('c')));
+      document.getElementById('name').value = data.name || '';
+      document.getElementById('class').value = data.class || 'zwiadowca';
+      setClassDefaults(); // Fill defaults
+      document.getElementById('hp').value = data.hp || classData[data.class].hp;
+      document.getElementById('ac').value = data.ac || classData[data.class].ac;
+      document.getElementById('abilities').value = data.abilities || classData[data.class].abilities;
+      document.getElementById('passive').value = data.passive || classData[data.class].passive;
+      document.getElementById('debuff').value = data.debuff || classData[data.class].debuff;
+      document.getElementById('mutation').value = data.mutation || '';
+    } catch(e) { console.error("Nie można wczytać postaci:", e); }
+  } else {
+    setClassDefaults();
+  }
+};
+</script>
+</body>
+</html>        <div class="service-card">
           <h3>Branding</h3>
           <p>Logos, color palettes, and vibes. Startups or side hustles, I got you.</p>
         </div>
